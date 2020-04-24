@@ -20,3 +20,7 @@ class Main(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+class User(models.Model):
+    username = models.CharField(max_length=300)
+    password = models.CharField(max_length=300)
+    email = models.CharField(max_length=300, default=False, null=True)
