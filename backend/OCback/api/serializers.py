@@ -35,7 +35,7 @@ class PostSerializer(serializers.Serializer):
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True)
     date = serializers.DateTimeField(read_only=True)
-    is_published = serializers.BooleanField()
+    is_published = serializers.BooleanField(read_only=True)
     author = UserSerializer(read_only=True)
     author_id = serializers.IntegerField(write_only=True)
 
@@ -62,7 +62,7 @@ class PostSerializer(serializers.Serializer):
 
 class MainSerializer(serializers.ModelSerializer):
     post = PostSerializer(read_only=True)
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Main
