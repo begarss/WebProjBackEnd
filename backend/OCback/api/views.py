@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models import Post,Category,Main
@@ -29,6 +31,17 @@ class CategoryList(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     # permission_classes = (IsAuthenticated,)
 
+
+class CategoryPostList(generics.ListCreateAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        try:
+            category = Category.objects.get(id=self.kwargs.get('pk'))
+        except Category.DoesNotExist:
+            raise Http404
+        queryset = category.posts.all()
+        return queryset
 # class MainList(APIView):
 #     def get(self, request):
 #         posts = Post.objects.all()
