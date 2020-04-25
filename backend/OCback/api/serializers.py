@@ -18,22 +18,16 @@ class CategorySerializer(serializers.Serializer):
         instance.save()
         return instance
 
-class UserSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
-    email = serializers.CharField(required=True)
-
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email')
+        fields = ('id', 'username','email', 'password')
         extra_kwargs = {'password': {'write_only': True, 'required': True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         # Token.objects.create(user=user)
         return user
-
 class PostSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField()

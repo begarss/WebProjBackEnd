@@ -10,7 +10,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=350)
     description = models.TextField()
-    category = models.ForeignKey(Category, on_delete = models.CASCADE)
+    category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name='posts')
     is_published = models.BooleanField(default=False, null=True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -20,7 +20,3 @@ class Main(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class User(models.Model):
-    username = models.CharField(max_length=300)
-    password = models.CharField(max_length=300)
-    email = models.CharField(max_length=300, default=False, null=True)

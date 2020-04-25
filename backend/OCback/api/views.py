@@ -1,15 +1,18 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework import viewsets
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Post,Category,Main,User
+from api.models import Post,Category,Main
 from api.serializers import CategorySerializer,PostSerializer,MainSerializer,UserSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status, generics
+from rest_framework import status, generics,viewsets
+from django.contrib.auth.models import User
+
+
+
 # Create your views here.
-
-
 class PostDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -24,7 +27,7 @@ class CategoryDetails(generics.RetrieveUpdateDestroyAPIView):
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -32,8 +35,23 @@ class CategoryList(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     # permission_classes = (IsAuthenticated,)
 
+
+class CategoryPostList(generics.ListCreateAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        try:
+            category = Category.objects.get(id=self.kwargs.get('pk'))
+        except Category.DoesNotExist:
+            raise Http404
+        queryset = category.posts.all()
+        return queryset
+
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
 # class MainList(APIView):

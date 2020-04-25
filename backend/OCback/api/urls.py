@@ -1,20 +1,16 @@
 from rest_framework_jwt.views import obtain_jwt_token
-from django.conf.urls import url, include
-from rest_framework import routers
-from django.urls import path
-from api.views import PostList, CategoryList, CategoryDetails, UserViewSet
+from django.urls import path,include
+from api.views import PostList, CategoryList, CategoryDetails, CategoryPostList, UserViewSet
 from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework import routers
 
-# router = routers.DefaultRouter()
-# router.register(r'users', UserViewSet)
-
+router = routers.DefaultRouter()
+router.register('users',UserViewSet)
 urlpatterns = [
-    # url(r'^', include(router.urls)),
-    # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+    path(r'', include(router.urls)),
     path('login/', obtain_jwt_token),
-    # path('users/', UserViewSet.as_view()),
     path('posts/', PostList.as_view()),
     path('categories/', CategoryList.as_view()),
     path('categories/<int:pk>/', CategoryDetails.as_view()),
+    path('categories/<int:pk>/posts/', CategoryPostList.as_view())
 ]
