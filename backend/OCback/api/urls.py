@@ -6,6 +6,7 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register('users',UserViewSet)
+
 urlpatterns = [
     path(r'', include(router.urls)),
     path('login/', obtain_jwt_token),
