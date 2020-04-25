@@ -18,16 +18,20 @@ class CategorySerializer(serializers.Serializer):
         instance.save()
         return instance
 
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username','email', 'password')
-        extra_kwargs = {'password': {'write_only': True, 'required': True}}
+        fields = ('id', 'username', 'email', 'password', 'is_superuser')
+        extra_kwargs = {'password': {'write_only': True, 'required': True},
+                        'is_superuser': {'read_only': True, 'required': False}}
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         # Token.objects.create(user=user)
         return user
+
+
 class PostSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField()
@@ -45,8 +49,8 @@ class PostSerializer(serializers.Serializer):
             description=validated_data.get('description'),
             category_id=validated_data.get('category_id'),
             date=validated_data.get('date'),
-            is_published = validated_data.get('is_published'),
-            author_id = validated_data.get('author_id')
+            is_published=validated_data.get('is_published'),
+            author_id=validated_data.get('author_id')
         )
         return post
 
@@ -67,6 +71,3 @@ class MainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Main
         fields = ('id', 'user', 'post')
-
-
-

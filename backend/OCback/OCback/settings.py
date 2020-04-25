@@ -117,9 +117,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'api.utils.jwt_response_payload_handler', #app_name is name of the app which contains utils.py
+}
 STATIC_URL = '/static/'
-REST_FRAMEWORK = {
+REST_FRAMEWORK = {  
     # 'DEFAULT_PERMISSION_CLASSES': (
     #     'rest_framework.permissions.IsAuthenticated',
     # ),
