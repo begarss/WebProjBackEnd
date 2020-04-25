@@ -5,9 +5,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models import Post,Category,Main
-from api.serializers import CategorySerializer,PostSerializer,MainSerializer
+from api.serializers import CategorySerializer,PostSerializer,MainSerializer,UserSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status, generics
+from rest_framework import status, generics,viewsets
+from django.contrib.auth.models import User
+
+
+
 # Create your views here.
 class PostDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
@@ -42,6 +46,14 @@ class CategoryPostList(generics.ListCreateAPIView):
             raise Http404
         queryset = category.posts.all()
         return queryset
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
 # class MainList(APIView):
 #     def get(self, request):
 #         posts = Post.objects.all()
