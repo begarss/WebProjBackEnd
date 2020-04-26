@@ -66,9 +66,9 @@ class PostSerializer(serializers.Serializer):
 
 class MainSerializer(serializers.ModelSerializer):
     post = PostSerializer(read_only=True)
-    post_id = serializers.IntegerField(write_only=True)
+    post_id = serializers.IntegerField()
     author = UserSerializer(read_only=True)
-    author_id = serializers.IntegerField(write_only=True)
+    author_id = serializers.IntegerField()
 
     class Meta:
         model = Main

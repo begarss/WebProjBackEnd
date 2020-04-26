@@ -117,3 +117,49 @@ class VacancyList(APIView):
 class Favorites(generics.ListCreateAPIView):
     queryset = Main.objects.all()
     serializer_class = MainSerializer
+
+
+@api_view(['GET'])
+def PostsByUser(request, user_id):
+    if request.method == 'GET':
+        posts = Post.objects.filter(author_id=user_id)
+
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def fav_details(request,  author_id):
+    try:
+        post = Main.objects.filter( author_id = author_id)
+    except Post.DoesNotExist as e:
+        return Response({'error': str(e)})
+
+
+    if request.method == 'GET':
+        serializer = MainSerializer(post, many=True)
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        post.delete()
+        return Response({'deleted': True})
+@api_view(['GET', 'PUT', 'DELETE'])
+def fav_delete(request, post_id, author_id):
+    try:
+        post = Main.objects.filter( author_id = author_id,post_id=post_id)
+    except Post.DoesNotExist as e:
+        return Response({'error': str(e)})
+
+
+    if request.method == 'GET':
+        serializer = MainSerializer(post, many=True)
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        post.delete()
+        return Response({'deleted': True})
+# @api_view(['POST'])
+# def addFav(request, user_id,post_id):
+#     if request.method == 'POST':
+#         posts = Post.objects.filter(author_id=user_id)
+#
+#         serializer = PostSerializer(posts, many=True)
+#         return Response(serializer.data)
