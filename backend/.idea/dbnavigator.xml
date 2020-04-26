@@ -36,6 +36,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
+      <object connection-id="247c3315-2084-49a7-b99d-96526d32ea3d" object-ref="schemas/main/tables/api_post" />
       <object connection-id="247c3315-2084-49a7-b99d-96526d32ea3d" object-ref="schemas/main/tables/auth_user" />
     </open-files>
   </component>
