@@ -18,5 +18,5 @@ class Post(models.Model):
 
 class Main(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_favorite = models.BooleanField(default=False, null=True)

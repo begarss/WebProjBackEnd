@@ -57,7 +57,7 @@ class PostSerializer(serializers.Serializer):
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get('description', instance.description)
         instance.category_id = validated_data.get('category_id', instance.category_id)
-        instance.is_published = validated_data.get('is_published',instance.is_published)
+        instance.is_published = validated_data.get('is_published', instance.is_published)
         instance.date = validated_data.get('data', instance.date)
         instance.author = validated_data.get('author', instance.author)
         instance.save()
@@ -65,7 +65,11 @@ class PostSerializer(serializers.Serializer):
 
 
 class MainSerializer(serializers.ModelSerializer):
-    post = PostSerializer(write_only=True)
+    post = PostSerializer(read_only=True)
+    post_id = serializers.IntegerField(write_only=True)
+    author = UserSerializer(read_only=True)
+    author_id = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = Main
-        fields = ('id',  'post')
+        fields = ('id', 'post', 'author', 'post_id', 'author_id','is_favorite')

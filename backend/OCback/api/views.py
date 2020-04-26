@@ -28,9 +28,12 @@ class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all().order_by('-date')
     serializer_class = PostSerializer
     # permission_classes = (IsAuthenticated,)
+
+
 class PostListPublished(generics.ListCreateAPIView):
     queryset = Post.objects.filter(is_published=True).order_by('-date')
     serializer_class = PostSerializer
+
 
 class CategoryList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -109,3 +112,8 @@ class VacancyList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({'error': serializer.errors}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class Favorites(generics.ListCreateAPIView):
+    queryset = Main.objects.all()
+    serializer_class = MainSerializer
